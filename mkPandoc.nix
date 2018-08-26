@@ -4,37 +4,45 @@
 { name
 , version
 , src
-, template
+, from ? null
+, to ? null 
+, listings ? true
+, template ? null
+, toc ? false
+, csl ? null
+, bibliography ? null
+, additionalPandocArgs ? ""
+, numberSections ? false
+, texlivePackages ? {}
 }:
 
 with pkgs;
 
-let
-  customTexlive = texlive.combine ({
-    inherit (texlive) scheme-basic;
-  } // template.texlivePackages);
-in
-  stdenv.mkDerivation {
-    inherit name version src;
+stdenv.mkDerivation {
+  inherit name version src;
 
-    unpackPhase = ":";
-    buildInputs = [
-      pandoc
-      customTexlive
-    ];
+  unpackPhase  = ":";
+  installPhase = ":";
 
-    buildPhase = ''
-      pandoc ${src} \
-        --from markdown \
-        --listings \
-        --toc \
-        --template ${template} \
-        --number-sections \
-        -o result.pdf
-    '';
+  buildInputs = [
+    pandoc
+    (texlive.combine ({
+      inherit (texlive) scheme-basic;
+    } // template.texlivePackages // texlivePackages))
+  ];
 
-    installPhase = ''
-      mv result.pdf $out
-    '';
-  }
+  buildPhase = ''
+    pandoc ${src} \
+      ${if from == null then "\\" else "--from ${from} \\"}
+      ${if to   == null then "\\" else "--to   ${to} \\"}
+      ${if listings then "--listings\\" else "\\"}
+      ${if toc then "--toc \\" else "\\"}
+      ${if bibliography == null then "\\" else "--bibliography ${bibliography}\\"}
+      ${if csl == null then "\\" else "--csl ${csl}"}
+      ${if (template == null) then "\\" else "--template ${template} \\"}
+      ${if numberSections then "--number-sections \\" else "\\"}
+      ${additionalPandocArgs}\
+      -o $out
+  '';
+}
 
