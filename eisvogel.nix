@@ -1,9 +1,10 @@
 { nixpkgs ? <nixpkgs> 
 , pkgs ? import nixpkgs {}
+, texlive ? pkgs.texlive
+, mkDerivation ? pkgs.stdenv.mkDerivation
+, fetchurl ? pkgs.fetchurl
 }:
-with pkgs;
-
-stdenv.mkDerivation {
+mkDerivation {
   name    = "eisvogel.latex";
   version = "0.0.1";
 
@@ -12,8 +13,11 @@ stdenv.mkDerivation {
     sha256 = "c81d55720e62d40963d33ea41f10def78059fb5f9d7359a33a2cf3db2411a6dd";
   };
 
-  unpackPhase = ":";
-  installPhase = "cp $src $out";
+  unpackPhase    = ":";
+  buildPhase     = ":";
+  installPhase   = "cp $src $out";
+  configurePhase = ":";
+  fixupPhase     = ":";
 } // {
   texlivePackages = {
     inherit (texlive)
