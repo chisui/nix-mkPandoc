@@ -56,13 +56,11 @@ let
         in if a == true                then ["--${name}"]
         else if !isBool a && a != null then ["--${name} ${a}"]
         else [];
-      mkArgs = l: concatLists (map mkArg l);
-
       toFilterName = f: f.pandocFilterName or (parseDrvName f.name).name;
-    in mkArgs [ 
+    in concatLists (map mkArg [ 
         "from" "to" "bibliography" "csl" "template" "top-level-division"
         "listings" "toc" "number-sections" "verbose"
-      ]
+      ])
       ++ map (d: "--filter ${toFilterName d}") filters
       ++ additionalPandocArgs;
 
@@ -73,13 +71,7 @@ in mkDerivation {
 
   unpackPhase = ":";
   configurePhase = ":";
-  buildPhase = ''
-    ${if verbose 
-      then "echo pandocArgs\necho " + concatStringsSep "\necho " pandocArgs
-      else ""
-    }
-    pandoc ${src} ${concatStringsSep " " pandocArgs} -o $out
-  '';
+  buildPhase = "pandoc ${src} ${concatStringsSep " " pandocArgs} -o $out";
   installPhase = ":";
   fixupPhase = ":";
 }
