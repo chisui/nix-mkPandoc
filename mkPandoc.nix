@@ -1,48 +1,86 @@
-{ nixpkgs ? <nixpkgs> 
+{ nixpkgs ? <nixpkgs>
 , pkgs ? import nixpkgs {}
+, texlive ? pkgs.texlive
+, pandoc ? pkgs.pandoc
+, stdenv ? pkgs.stdenv
 }:
-{ name
-, version
-, src
-, from ? null
-, to ? null 
-, listings ? true
+{ name, version, src
+# additional build inputs
+, buildInputs ? []
+# additional texlive packages passed to texlive.combine
+, texlivePackages ? {}
+# raw pandoc args that aren't covered by arguments to mkPandoc (yet)
+, additionalPandocArgs ? []
+# a list of pandoc filters. Each of these will result in a `--filter` argument
+# to pandoc. The filters themselves have to be deriviations themselves and are
+# added to the buildInputs. The name is either the contents of 
+# `pandocFilterName` on the filter or the derivation name if no explict name was given.
+, filters ? []
+# The template has to point to a latex file and has to list all required
+# texlive packages in an attribute called `texlivePackages`.
 , template ? null
+# one to one mapping for pandoc arguments
+, from ? null
+, to ? null
+, listings ? true
 , toc ? false
 , csl ? null
 , bibliography ? null
-, additionalPandocArgs ? ""
-, numberSections ? false
-, texlivePackages ? {}
-}:
+, number-sections ? false
+, top-level-division ? null
+, verbose ? false
+}@args:
 
-with pkgs;
+with builtins; 
+let
+  customTexlive = if to != "latex" && match "^.*\\.pdf$" name == null
+    then [] # don't build it if we don't need it
+    else [(
+      texlive.combine (
+        { inherit (texlive) scheme-basic; }
+        // (if template != null
+            then template.texlivePackages
+            # default tempalte packages
+            else { inherit (texlive) 
+              lm collection-fontsrecommended listings;
+            }
+        )
+        // texlivePackages
+      )
+    )];
 
-stdenv.mkDerivation {
+  pandocArgs = 
+    let 
+      mkArg = name:
+        let a = args.${name} or null;
+        in if a == true                then ["--${name}"]
+        else if !isBool a && a != null then ["--${name} ${a}"]
+        else [];
+      mkArgs = l: concatLists (map mkArg l);
+
+      toFilterName = f: f.pandocFilterName or (parseDrvName f.name).name;
+    in mkArgs [ 
+        "from" "to" "bibliography" "csl" "template" "top-level-division"
+        "listings" "toc" "number-sections" "verbose"
+      ]
+      ++ map (d: "--filter ${toFilterName d}") filters
+      ++ additionalPandocArgs;
+
+in stdenv.mkDerivation {
   inherit name version src;
 
-  unpackPhase  = ":";
-  installPhase = ":";
+  buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
 
-  buildInputs = [
-    pandoc
-    (texlive.combine ({
-      inherit (texlive) scheme-basic;
-    } // template.texlivePackages // texlivePackages))
-  ];
-
+  unpackPhase = ":";
+  configurePhase = ":";
   buildPhase = ''
-    pandoc ${src} \
-      ${if from == null then "\\" else "--from ${from} \\"}
-      ${if to   == null then "\\" else "--to   ${to} \\"}
-      ${if listings then "--listings\\" else "\\"}
-      ${if toc then "--toc \\" else "\\"}
-      ${if bibliography == null then "\\" else "--bibliography ${bibliography}\\"}
-      ${if csl == null then "\\" else "--csl ${csl}"}
-      ${if (template == null) then "\\" else "--template ${template} \\"}
-      ${if numberSections then "--number-sections \\" else "\\"}
-      ${additionalPandocArgs}\
-      -o $out
+    ${if verbose 
+      then "echo pandocArgs\necho " + concatStringsSep "\necho " pandocArgs
+      else ""
+    }
+    pandoc ${src} ${concatStringsSep " " pandocArgs} -o $out
   '';
+  installPhase = ":";
+  fixupPhase = ":";
 }
 
