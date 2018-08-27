@@ -2,7 +2,7 @@
 , pkgs ? import nixpkgs {}
 , texlive ? pkgs.texlive
 , pandoc ? pkgs.pandoc
-, stdenv ? pkgs.stdenv
+, mkDerivation ? pkgs.stdenv.mkDerivation
 }:
 { name, version, src
 # additional build inputs
@@ -66,7 +66,7 @@ let
       ++ map (d: "--filter ${toFilterName d}") filters
       ++ additionalPandocArgs;
 
-in stdenv.mkDerivation {
+in mkDerivation {
   inherit name version src;
 
   buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
