@@ -85,20 +85,11 @@ let
       ++ map (d: "--filter ${toFilterName d}") filters
       ++ additionalPandocArgs;
 
-  mkDrvArgs = {
-    inherit name version src;
+in mkDerivation {
+  inherit name version src;
 
-    buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
+  buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
 
-    configurePhase = ":";
-    buildPhase = "pandoc ${documentFile} ${concatStringsSep " " pandocArgs} -o $out";
-    installPhase = ":";
-    fixupPhase = ":";
-  } // (
-    # can't unpack single file
-    if isDir
-      then {} 
-      else { unpackPhase = ":"; }
-  );
-in mkDerivation mkDrvArgs
-
+  phases = ["buildPhase"] ++ (if isDir then ["unpackPhase"] else []);
+  buildPhase = "pandoc ${documentFile} ${concatStringsSep " " pandocArgs} -o $out";
+}
