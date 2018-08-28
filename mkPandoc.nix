@@ -1,5 +1,6 @@
 { nixpkgs ? <nixpkgs>
 , pkgs ? import nixpkgs {}
+, lib ? pkgs.lib
 , texlive ? pkgs.texlive
 , pandoc ? pkgs.pandoc
 , mkDerivation ? pkgs.stdenv.mkDerivation
@@ -39,57 +40,44 @@
 , top-level-division ? null
 , verbose ? false
 }@args:
-
-with builtins; 
 let
-  # This is a hack but it should work all of the time
-  isDir = src != documentFile;
-  customTexlive = if to != "latex" && match "^.*\\.pdf$" name == null
-    then [] # don't build it if we don't need it
-    else [(
-      texlive.combine (
-        { inherit (texlive) scheme-basic; }
-        // (if template != null
-            then template.texlivePackages or []
-            # default tempalte packages
-            else { inherit (texlive) 
-              lm collection-fontsrecommended listings;
-            }
-        )
-        // texlivePackages
+  inherit (builtins) isBool toJSON concatLists parseDrvName elem concatStringsSep;
+  inherit (lib) optional hasSuffix mapAttrsToList filterAttrs; 
+
+  customTexlive = optional (to == "latex" || hasSuffix ".pdf" name) (
+    texlive.combine (
+      { inherit (texlive) scheme-basic; }
+      // (if template != null
+        then template.texlivePackages or []
+        # default tempalte packages
+        else { inherit (texlive) lm collection-fontsrecommended listings; }
       )
-    )];
+      // texlivePackages
+    )
+  );
 
   pandocArgs = 
     let 
-      mkArg = name:
-        let a = args.${name} or null;
-        in if a == true                then ["--${name}"]
-        else if !isBool a && a != null then ["--${name} ${toJSON a}"]
-        else [];
-      mkArgs = l: concatLists (map mkArg l);
-      mkVars = name: vars: 
-        let mkVar = attr:
-          let a = vars.${attr};
-          in if a == true                then ["--${name}=${attr}"]
-          else if !isBool a && a != null then ["--${name}=${attr}:${toJSON a}"]
-          else [];
-        in concatLists (map mkVar (attrNames vars));
+      mkArgs = { arg, val }: attrs:
+        let mkArg = name: value:
+          if isBool value then optional value "${arg name}"
+          else optional (value != null) "${arg name}${val (toJSON value)}";
+        in concatLists (mapAttrsToList mkArg attrs);
+      normalArg =   { arg = n: "--${n}";        val = v: " ${v}"; };
+      varArg = pre: { arg = n: "--${pre} ${n}"; val = v: ":${v}"; };
       toFilterName = f: f.pandocFilterName or (parseDrvName f.name).name;
-    in mkArgs [ 
+    in mkArgs normalArg (filterAttrs (n: v: elem n [ 
         "from" "to" "bibliography" "csl" "template" "top-level-division"
         "listings" "toc" "number-sections" "verbose"
-      ]
-      ++ mkVars "metadata" metadatas
-      ++ mkVars "variable" variables
+      ]) args)
+      ++ mkArgs (varArg "metadata") metadatas
+      ++ mkArgs (varArg "variable") variables
       ++ map (d: "--filter ${toFilterName d}") filters
-      ++ additionalPandocArgs;
-
+      ++ additionalPandocArgs
+      ++ ["-o $out" documentFile];
 in mkDerivation {
   inherit name version src;
-
   buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
-
-  phases = ["buildPhase"] ++ (if isDir then ["unpackPhase"] else []);
-  buildPhase = "pandoc ${documentFile} ${concatStringsSep " " pandocArgs} -o $out";
+  phases = ["buildPhase"] ++ optional (src != documentFile) "unpackPhase";
+  buildPhase = "pandoc ${concatStringsSep " " pandocArgs}";
 }
