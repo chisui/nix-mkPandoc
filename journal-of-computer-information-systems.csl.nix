@@ -12,9 +12,7 @@ mkDerivation {
     sha256 = "803069db5fedba92f478ba8b91a3235cb0b892e1d8edc57b611b832d3f763b95";
   };        
 
-  unpackPhase    = ":";
-  buildPhase     = ":";
-  installPhase   = "cp $src $out";
-  configurePhase = ":";
-  fixupPhase     = ":";
+
+  phases       = "installPhase";
+  installPhase = "cp $src $out";
 }
