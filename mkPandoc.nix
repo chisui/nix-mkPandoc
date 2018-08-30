@@ -39,6 +39,7 @@
 , number-sections ? false
 , top-level-division ? null
 , verbose ? false
+, ...
 }@args:
 let
   inherit (builtins) isBool toJSON concatLists parseDrvName elem concatStringsSep;
