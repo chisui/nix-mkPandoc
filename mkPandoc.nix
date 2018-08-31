@@ -29,16 +29,6 @@
 # `--variable=<KEY>:<VALUE>` argument. Boolean entries will result in a
 # `--variable=<KEY>` flag if the value is `true` otherwise it will be absent
 , variables ? {}
-# one to one mapping for pandoc arguments
-, from ? null
-, to ? null
-, listings ? true
-, toc ? false
-, csl ? null
-, bibliography ? null
-, number-sections ? false
-, top-level-division ? null
-, verbose ? false
 , ...
 }@args:
 let
