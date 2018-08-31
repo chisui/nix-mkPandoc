@@ -69,7 +69,7 @@ let
       toFilterName = f: f.pandocFilterName or (parseDrvName f.name).name;
     in mkArgs normalArg (filterAttrs (n: v: elem n [ 
         "from" "to" "bibliography" "csl" "template" "top-level-division"
-        "listings" "toc" "number-sections" "verbose"
+        "listings" "toc" "number-sections" "verbose" "include-before-body"
       ]) args)
       ++ mkArgs (varArg "metadata") metadatas
       ++ mkArgs (varArg "variable") variables
