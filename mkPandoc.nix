@@ -1,5 +1,4 @@
-{ nixpkgs ? <nixpkgs>
-, pkgs ? import nixpkgs {}
+{ pkgs 
 , lib ? pkgs.lib
 , texlive ? pkgs.texlive
 , pandoc ? pkgs.pandoc

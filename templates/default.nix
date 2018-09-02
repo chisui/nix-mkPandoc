@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs }: 
 with builtins;
 let
   importTemplate = t: 
