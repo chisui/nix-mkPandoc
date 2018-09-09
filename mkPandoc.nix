@@ -10,8 +10,6 @@
 , buildInputs ? []
 # additional texlive packages passed to texlive.combine
 , texlivePackages ? {}
-# raw pandoc args that aren't covered by arguments to mkPandoc (yet)
-, additionalPandocArgs ? []
 # a list of pandoc filters. Each of these will result in a `--filter` argument
 # to pandoc. The filters themselves have to be deriviations themselves and are
 # added to the buildInputs. The name is either the contents of 
@@ -56,19 +54,18 @@ let
           if isBool value then optional value "${arg name}"
           else optional (value != null) "${arg name}${val (toJSON value)}";
         in concatLists (mapAttrsToList mkArg attrs);
-      normalArg =   { arg = n: "--${n}";        val = v: " ${v}"; };
-      varArg = pre: { arg = n: "--${pre} ${n}"; val = v: ":${v}"; };
+      normalArg =      { arg = n: "--${n}";        val = v: " ${v}"; };
+      varArg    = pre: { arg = n: "--${pre} ${n}"; val = v: ":${v}"; };
+      isRelevantArg = n: v: ! elem n [
+        "name" "version" "src" "srcs" "documentFile" "buildInputs"
+        "texlivePackages" "filters" "metadata" "variable"
+      ];
       toFilterName = f: f.pandocFilterName or (parseDrvName f.name).name;
-    in mkArgs normalArg (filterAttrs (n: v: elem n [ 
-        "from" "to" "bibliography" "csl" "template" "top-level-division"
-        "listings" "toc" "number-sections" "verbose" "include-before-body"
-        "include-after-body"
-      ]) args)
-      ++ mkArgs (varArg "metadata") metadatas
-      ++ mkArgs (varArg "variable") variables
-      ++ map (d: "--filter ${toFilterName d}") filters
-      ++ additionalPandocArgs
-      ++ ["-o $out" documentFile];
+    in mkArgs normalArg (filterAttrs isRelevantArg args)
+    ++ mkArgs (varArg "metadata") metadatas
+    ++ mkArgs (varArg "variable") variables
+    ++ map (d: "--filter ${toFilterName d}") filters
+    ++ ["-o $out" documentFile];
 in mkDerivation {
   inherit name version src;
   buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
