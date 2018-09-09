@@ -58,7 +58,7 @@ let
       varArg    = pre: { arg = n: "--${pre} ${n}"; val = v: ":${v}"; };
       isRelevantArg = n: v: ! elem n [
         "name" "version" "src" "srcs" "documentFile" "buildInputs"
-        "texlivePackages" "filters" "metadata" "variable"
+        "texlivePackages" "filters" "metadatas" "variables"
       ];
       toFilterName = f: f.pandocFilterName or (parseDrvName f.name).name;
     in mkArgs normalArg (filterAttrs isRelevantArg args)
