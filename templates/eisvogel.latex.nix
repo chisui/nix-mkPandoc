@@ -1,5 +1,4 @@
-{ nixpkgs ? <nixpkgs> 
-, pkgs ? import nixpkgs {}
+{ pkgs
 , texlive ? pkgs.texlive
 , mkDerivation ? pkgs.stdenv.mkDerivation
 , fetchurl ? pkgs.fetchurl

@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {}
+{ pkgs 
 , lib ? pkgs.lib
 , mkDerivation ? pkgs.stdenv.mkDerivation
 }:
