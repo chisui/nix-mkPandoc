@@ -1,11 +1,9 @@
 
 # mkPandoc 
 
-## call pandoc from nix
-
 Provides a way to use [Nix](https://nixos.org/nix/) to call [pandoc](https://github.com/jgm/pandoc).
 
-### usage
+## usage
 
 The basic usage is:
 
