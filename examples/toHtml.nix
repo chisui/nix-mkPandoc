@@ -1,7 +1,7 @@
 { pkgs     ? import ./nixpkgs.pinned.nix
-, mkPandoc ? import ../mkPandoc.nix { inherit pkgs; }
+, mkPandoc ? import ../default.nix { inherit pkgs; }
 }:
-mkPandoc {
+mkPandoc.mkPandoc {
   name       = "simple.html";
   standalone = true;
   version    = "0.1.0";
