@@ -69,6 +69,6 @@ let
 in mkDerivation {
   inherit name version src;
   buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
-  phases = ["buildPhase"] ++ optional (src != documentFile) "unpackPhase";
+  phases = optional (src != documentFile) "unpackPhase" ++ ["buildPhase"];
   buildPhase = "pandoc ${concatStringsSep " " pandocArgs}";
 }
