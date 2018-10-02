@@ -1,4 +1,6 @@
 
+[![Build Status](https://travis-ci.org/chisui/nix-mkPandoc#.svg?branch=master)](https://travis-ci.org/chisui/nix-mkPandoc)
+
 # mkPandoc 
 
 Provides a way to use [Nix](https://nixos.org/nix/) to call [pandoc](https://github.com/jgm/pandoc).
