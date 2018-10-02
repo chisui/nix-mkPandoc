@@ -7,14 +7,14 @@ mkDerivation {
   phases     = ["buildPhase"];
   buildPhase = ''
     mkdir $out
-    cp ${import ./simple.nix {}            } $out/simple.pdf
-    cp ${import ./toHtml.nix {}            } $out/toHtml.html
-    cp ${import ./withBibliography.nix {}  } $out/withBibliography.pdf
-    cp ${import ./withCodeBlocks.nix {}    } $out/withCodeBlocks.pdf
-    cp ${import ./withCsl.nix {}           } $out/withCsl.pdf
-    cp ${import ./withImage.nix {}         } $out/withImage.pdf
-    cp ${import ./withLatexTemplate.nix {} } $out/withLatexTemplate.pdf
-    cp ${import ./withVariables.nix {}     } $out/withVariables.pdf
+    ln -s ${import ./simple.nix {}            } $out/simple.pdf
+    ln -s ${import ./toHtml.nix {}            } $out/toHtml.html
+    ln -s ${import ./withBibliography.nix {}  } $out/withBibliography.pdf
+    ln -s ${import ./withCodeBlocks.nix {}    } $out/withCodeBlocks.pdf
+    ln -s ${import ./withCsl.nix {}           } $out/withCsl.pdf
+    ln -s ${import ./withImage.nix {}         } $out/withImage.pdf
+    ln -s ${import ./withLatexTemplate.nix {} } $out/withLatexTemplate.pdf
+    ln -s ${import ./withVariables.nix {}     } $out/withVariables.pdf
   '';
 }
 
