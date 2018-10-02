@@ -7,7 +7,7 @@ mkPandoc.mkPandoc {
   version      = "0.1.0";
   src          = ./withBibliography.md;
   bibliography = ./bibliography.bib;
-  csl          = mkPando.csls.journal-of-computer-information-systems;
+  csl          = mkPandoc.csls.journal-of-computer-information-systems;
   filters      = [ pandoc-citeproc ];
 }
 
