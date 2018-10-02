@@ -3,4 +3,6 @@
 , csls      ? import ./csls.nix     { inherit pkgs; }
 , templates ? import ./templates    { inherit pkgs; }
 }:
-{ inherit mkPandoc csls templates; }
+{ __functor = self: mkPandoc;
+  inherit csls templates; 
+}

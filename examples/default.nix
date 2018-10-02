@@ -15,6 +15,7 @@ mkDerivation {
     ln -s ${import ./withImage.nix         {} } $out/withImage.pdf
     ln -s ${import ./withLatexTemplate.nix {} } $out/withLatexTemplate.pdf
     ln -s ${import ./withVariables.nix     {} } $out/withVariables.pdf
+    ln -s ${import ./srcAsResourceDir.nix  {} } $out/srcAsResourceDir.pdf
   '';
 }
 
