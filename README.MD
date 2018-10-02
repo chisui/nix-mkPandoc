@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/chisui/nix-mkPandoc#.svg?branch=master)](https://travis-ci.org/chisui/nix-mkPandoc)
+[![Build Status](https://travis-ci.org/chisui/nix-mkPandoc.svg?branch=master)](https://travis-ci.org/chisui/nix-mkPandoc)
 
 # mkPandoc 
 
