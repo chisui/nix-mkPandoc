@@ -39,7 +39,7 @@ let
     texlive.combine (
       { inherit (texlive) scheme-basic; }
       // (if template != null
-        then template.texlivePackages or []
+        then template.texlivePackages or {}
         # default tempalte packages
         else { inherit (texlive) lm collection-fontsrecommended listings; }
       )
