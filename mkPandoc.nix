@@ -4,8 +4,10 @@
 , pandoc ? pkgs.pandoc
 , mkDerivation ? pkgs.stdenv.mkDerivation
 }:
-{ name, version, src
+{ src, name
 , documentFile ? src
+, version ? "0.1.0"
+, to ? null
 # additional build inputs
 , buildInputs ? []
 # additional texlive packages passed to texlive.combine
@@ -13,8 +15,8 @@
 # a list of pandoc filters. Each of these will result in a `--filter` argument
 # to pandoc. The filters themselves have to be deriviations themselves and are
 # added to the buildInputs. The name is either the contents of 
-# `pandocFilterName` on the filter or the derivation name if no explict name was
-# given.
+# `pandocFilterName` on the filter or the derivation name if no explict name
+# was given.
 , filters ? []
 # The template has to point to a latex file and has to list all required
 # texlive packages in an attribute called `texlivePackages`.
@@ -28,12 +30,13 @@
 # `--variable=<KEY>` flag if the value is `true` otherwise it will be absent
 , variables ? {}
 # one to one mapping for pandoc arguments
-, to ? null
 , ...
 }@args:
 let
-  inherit (builtins) isBool toJSON concatLists parseDrvName elem concatStringsSep;
-  inherit (lib) optional hasSuffix mapAttrsToList filterAttrs; 
+  inherit (builtins)
+    isBool toJSON concatLists parseDrvName elem concatStringsSep;
+  inherit (lib) 
+    optional hasSuffix mapAttrsToList filterAttrs; 
 
   customTexlive = optional (to == "latex" || hasSuffix ".pdf" name) (
     texlive.combine (
