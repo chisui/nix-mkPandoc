@@ -7,16 +7,17 @@ mkDerivation {
   phases       = ["installPhase"];
   installPhase = ''
     mkdir $out
-    ln -s ${import ./standalone.nix           } $out/doc.pdf
-    ln -s ${import ./simple.nix            {} } $out/simple.pdf
-    ln -s ${import ./toHtml.nix            {} } $out/toHtml.html
-    ln -s ${import ./withBibliography.nix  {} } $out/withBibliography.pdf
-    ln -s ${import ./withCodeBlocks.nix    {} } $out/withCodeBlocks.pdf
-    ln -s ${import ./withCsl.nix           {} } $out/withCsl.pdf
-    ln -s ${import ./withImage.nix         {} } $out/withImage.pdf
-    ln -s ${import ./withLatexTemplate.nix {} } $out/withLatexTemplate.pdf
-    ln -s ${import ./withVariables.nix     {} } $out/withVariables.pdf
-    ln -s ${import ./srcAsResourceDir.nix  {} } $out/srcAsResourceDir.pdf
+    ln -s ${import ./standalone.nix               } $out/doc.pdf
+    ln -s ${import ./simple.nix                {} } $out/simple.pdf
+    ln -s ${import ./toHtml.nix                {} } $out/toHtml.html
+    ln -s ${import ./withAdditionalPackges.nix {} } $out/withAdditionalPackges.pdf
+    ln -s ${import ./withBibliography.nix      {} } $out/withBibliography.pdf
+    ln -s ${import ./withCodeBlocks.nix        {} } $out/withCodeBlocks.pdf
+    ln -s ${import ./withCsl.nix               {} } $out/withCsl.pdf
+    ln -s ${import ./withImage.nix             {} } $out/withImage.pdf
+    ln -s ${import ./withLatexTemplate.nix     {} } $out/withLatexTemplate.pdf
+    ln -s ${import ./withVariables.nix         {} } $out/withVariables.pdf
+    ln -s ${import ./srcAsResourceDir.nix      {} } $out/srcAsResourceDir.pdf
   '';
 }
 
