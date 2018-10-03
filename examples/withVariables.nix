@@ -6,7 +6,7 @@ mkPandoc {
   version  = "0.1.0";
   src      = ./withCodeBlocks.md;
   listings = true;
-  template = mkPandoc.templates.eisvogel;
+  template = mkPandoc.template.latex.eisvogel;
   variables = {
     titlepage = true;
     author    = "Philipp Dargel";
