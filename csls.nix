@@ -15,5 +15,7 @@ let
       installPhase = "cp $src $out";
     };
   };
-in listToAttrs (map mkCsl (fromJSON (readFile ./csls.json)))
+  mkCsls = file: listToAttrs (map mkCsl (fromJSON (readFile file)));
+in 
+  (mkCsls ./csls.json) // { dependent = mkCsls ./csls-dependent.json; }
 
