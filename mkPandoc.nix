@@ -75,5 +75,5 @@ in mkDerivation {
   buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
   phases = optional (src != documentFile) "unpackPhase" ++ ["buildPhase"];
   buildPhase = pandocCmd;
-  shellHook = "export PANDOC_CMD=${pandocCmd}";
+  shellHook = "export PANDOC_CMD=\"${lib.escape ["\""] pandocCmd}\"";
 }
