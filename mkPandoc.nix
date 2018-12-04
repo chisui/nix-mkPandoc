@@ -69,9 +69,11 @@ let
     ++ mkArgs (varArg "variable") variables
     ++ map (d: "--filter ${toFilterName d}") filters
     ++ ["-o $out" documentFile];
+  pandocCmd = "pandoc ${concatStringsSep " " pandocArgs}";
 in mkDerivation {
   inherit name version src;
   buildInputs = [ pandoc ] ++ buildInputs ++ filters ++ customTexlive;
   phases = optional (src != documentFile) "unpackPhase" ++ ["buildPhase"];
-  buildPhase = "pandoc ${concatStringsSep " " pandocArgs}";
+  buildPhase = pandocCmd;
+  shellHook = "export PANDOC_CMD=${pandocCmd}";
 }
