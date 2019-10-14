@@ -7,7 +7,6 @@ mkDerivation {
   phases       = ["installPhase"];
   installPhase = ''
     mkdir $out
-    ln -s ${import ./standalone.nix               } $out/doc.pdf
     ln -s ${import ./simple.nix                {} } $out/simple.pdf
     ln -s ${import ./toHtml.nix                {} } $out/toHtml.html
     ln -s ${import ./withAdditionalPackges.nix {} } $out/withAdditionalPackges.pdf
