@@ -11,5 +11,6 @@ mkPandoc {
     revealjs-url = "https://github.com/hakimel/reveal.js";
   };
   incremental = true;
+  standalone  = true;
 }
 
