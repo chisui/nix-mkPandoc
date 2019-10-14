@@ -17,6 +17,7 @@ mkDerivation {
     ln -s ${import ./withLatexTemplate.nix     {} } $out/withLatexTemplate.pdf
     ln -s ${import ./withVariables.nix         {} } $out/withVariables.pdf
     ln -s ${import ./srcAsResourceDir.nix      {} } $out/srcAsResourceDir.pdf
+    ln -s ${import ./revealjs.nix              {} } $out/revealjs.html
   '';
 }
 
