@@ -1,4 +1,4 @@
-[![build examples unstable](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml/badge.svg)](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml)
+[![build examples nixpkgs-unstable](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml/badge.svg)](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml)
 
 
 # mkPandoc 
