@@ -9,5 +9,9 @@ mkPandoc {
   bibliography = ./bibliography.bib;
   csl          = mkPandoc.csls.journal-of-computer-information-systems;
   filters      = [ pandoc-citeproc ];
+  texlivePackages = {
+    inherit (pkgs.texlive)
+      xcolor;
+  };
 }
 

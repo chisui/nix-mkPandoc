@@ -8,5 +8,9 @@ mkPandoc {
   src          = ./withBibliography.md;
   bibliography = ./bibliography.bib;
   filters      = [ pandoc-citeproc ];
+  texlivePackages = {
+    inherit (pkgs.texlive)
+      xcolor;
+  };
 }
 

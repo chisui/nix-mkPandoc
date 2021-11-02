@@ -11,5 +11,9 @@ mkPandoc {
     titlepage = true;
     author    = "Philipp Dargel";
   };
+  texlivePackages = {
+    inherit (pkgs.texlive)
+      xcolor;
+  };
 }
 
