@@ -37,6 +37,7 @@ mkDerivation {
       caption
       l3packages
       l3kernel
+      zref
       xkeyval;
   };
 }
