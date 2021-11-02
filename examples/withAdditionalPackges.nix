@@ -8,6 +8,7 @@ mkPandoc {
   src     = ./withAdditionalPackges.md;
   texlivePackages = {
     inherit (texlive)
+      footnote
       etoolbox
       xcolor
       booktabs;
