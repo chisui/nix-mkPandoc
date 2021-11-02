@@ -8,7 +8,10 @@ mkPandoc {
   to        = "revealjs";
   variables = {
     theme = "serif";
-    revealjs-url = "https://github.com/hakimel/reveal.js";
+    revealjs-url = builtins.fetchTarball {
+      url    = "https://registry.npmjs.org/reveal.js/-/reveal.js-4.1.3.tgz";
+      sha256 = "0a93vxd49y2g0wsafghgqcpj6gszzjvv9lql5zrwrw26lc02x465";
+    };
   };
   incremental = true;
   standalone  = true;
