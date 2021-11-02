@@ -5,6 +5,20 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        examples:
+          - revealjs
+          - simple
+          - srcAsResourceDir
+          - toHtml
+          - withAdditionalPackges
+          - withBibliography
+          - withCodeBlocks
+          - withCsl
+          - withImage
+          - withLatexTemplate
+          - withVariables
     env:
       NIXPKGS_ALLOW_BROKEN: 1
     steps:
@@ -12,4 +26,4 @@ jobs:
     - uses: cachix/install-nix-action@v13
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - run: cd examples && nix-build
+    - run: nix-build examples/{{ matrix.examples }}.nix
