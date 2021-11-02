@@ -1,4 +1,4 @@
-{ pkgs     ? import ./nixpkgs.pinned.nix
+{ pkgs     ? import <nixpkgs> { }
 , mkPandoc ? import ../default.nix { inherit pkgs; }
 , texlive  ? pkgs.texlive
 }:
