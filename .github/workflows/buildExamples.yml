@@ -3,11 +3,11 @@ on:
   pull_request:
   push:
 jobs:
-  examples:
+  example:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        examples:
+        example:
           - revealjs
           - simple
           - srcAsResourceDir
@@ -26,4 +26,4 @@ jobs:
     - uses: cachix/install-nix-action@v13
       with:
         nix_path: nixpkgs=channel:nixos-unstable
-    - run: nix-build examples/${{ matrix.examples }}.nix
+    - run: nix-build examples/${{ matrix.example }}.nix
