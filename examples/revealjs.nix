@@ -13,6 +13,7 @@ mkPandoc {
       sha256 = "0a93vxd49y2g0wsafghgqcpj6gszzjvv9lql5zrwrw26lc02x465";
     };
   };
+  self-contained = true;
   incremental = true;
   standalone  = true;
 }
