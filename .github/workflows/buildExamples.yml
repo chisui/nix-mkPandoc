@@ -1,4 +1,4 @@
-name: "build examples"
+name: "build examples nixos-unstable"
 on:
   pull_request:
   push:
@@ -13,14 +13,13 @@ jobs:
           - srcAsResourceDir
           - toHtml
           - withAdditionalPackges
-          - withBibliography
           - withCodeBlocks
-          - withCsl
           - withImage
-          - withLatexTemplate
           - withVariables
-    env:
-      NIXPKGS_ALLOW_BROKEN: 1
+          - withLatexTemplate
+          # pandoc-citeproc is currently broken in nixos-unstable
+          # - withCsl
+          # - withBibliography
     steps:
     - uses: actions/checkout@v2.3.4
     - uses: cachix/install-nix-action@v13
@@ -29,5 +28,6 @@ jobs:
     - run: nix-build examples/${{ matrix.example }}.nix
     - uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.example }}
+        name: ${{ matrix.example }}-result
         path: result
+        retention-days: 1

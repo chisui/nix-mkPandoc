@@ -1,4 +1,4 @@
-[![examples](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml/badge.svg)](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml)
+[![build examples unstable](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml/badge.svg)](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml)
 
 
 # mkPandoc 
@@ -11,16 +11,20 @@ The basic usage is:
 
 ```nix
 { pkgs     ? import <nixpkgs> { }
-, mkPandoc ? import (pkgs.fetchFromGitHub {
-    owner = "chisui";
-    repo  = "nix-mkPandoc";
-    rev   = "master";
+, mkPandoc ? import (builtins.fetchTarball {
+    url = "https://github.com/chisui/nix-mkPandoc/archive/master.tar.gz";
   }) { inherit pkgs; }
 }:
 mkPandoc {
   name    = "simple.pdf";
   version = "0.1.0";
-  src     = ./simple.md;
+  src     = builtins.toFile "doc.md" ''
+    
+    # Example
+
+    This is a simple example.
+
+  '';
   texlivePackages = {
     inherit (pkgs.texlive)
       xcolor;
