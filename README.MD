@@ -1,3 +1,5 @@
+[![examples](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml/badge.svg)](https://github.com/chisui/nix-mkPandoc/actions/workflows/buildExamples.yml)
+
 
 # mkPandoc 
 
