@@ -27,3 +27,7 @@ jobs:
       with:
         nix_path: nixpkgs=channel:nixos-unstable
     - run: nix-build examples/${{ matrix.example }}.nix
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.example }}
+        path: result
