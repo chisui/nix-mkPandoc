@@ -1,4 +1,0 @@
-language: nix
-sudo: true
-script:
-- nix build -f examples
