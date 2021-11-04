@@ -10,25 +10,21 @@ Provides a way to use [Nix](https://nixos.org/nix/) to call [pandoc](https://git
 The basic usage is:
 
 ```nix
-{ pkgs     ? import <nixpkgs> { }
-, mkPandoc ? import (builtins.fetchTarball {
+{ pkgs ? import <nixpkgs> { }
+}@args:
+let
+  mkPandoc = import (builtins.fetchTarball {
     url = "https://github.com/chisui/nix-mkPandoc/archive/master.tar.gz";
-  }) { inherit pkgs; }
-}:
-mkPandoc {
-  name    = "simple.pdf";
-  version = "0.1.0";
-  src     = builtins.toFile "doc.md" ''
+  }) args;
+in mkPandoc {
+  name = "simple.pdf";
+  src = builtins.toFile "doc.md" ''
     
     # Example
 
     This is a simple example.
 
   '';
-  texlivePackages = {
-    inherit (pkgs.texlive)
-      xcolor;
-  };
 }
 ```
 

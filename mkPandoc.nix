@@ -44,7 +44,13 @@ let
       // (if template != null
         then template.texlivePackages or {}
         # default tempalte packages
-        else { inherit (texlive) lm collection-fontsrecommended listings; }
+        else {
+          inherit (texlive)
+            lm
+            xcolor
+            collection-fontsrecommended
+            listings;
+        }
       )
       // texlivePackages
     )

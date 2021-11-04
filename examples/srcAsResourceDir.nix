@@ -6,9 +6,5 @@ mkPandoc {
   version      = "0.1.0";
   src          = ./resources;
   documentFile = ./srcAsResourceDir.md;
-  texlivePackages = {
-    inherit (pkgs.texlive)
-      xcolor;
-  };
 }
 
