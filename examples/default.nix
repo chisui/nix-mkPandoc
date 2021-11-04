@@ -3,10 +3,11 @@
 }:
 let
   args = { inherit pkgs; };
-in mkDerivation {
-  name         = "mkPandoc-examples";
-  version      = "0.1.0";
-  phases       = ["installPhase"];
+in
+mkDerivation {
+  name = "mkPandoc-examples";
+  version = "0.1.0";
+  phases = [ "installPhase" ];
   installPhase = ''
     mkdir $out
     ln -s ${import ./simple.nix                args } $out/simple.pdf
@@ -22,4 +23,3 @@ in mkDerivation {
     ln -s ${import ./revealjs.nix              args } $out/revealjs.html
   '';
 }
-

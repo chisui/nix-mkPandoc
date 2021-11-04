@@ -1,9 +1,8 @@
-{ pkgs     ? import <nixpkgs> { }
+{ pkgs ? import <nixpkgs> { }
 , mkPandoc ? import ../default.nix { inherit pkgs; }
 }:
 mkPandoc {
-  name    = "simple.pdf";
+  name = "simple.pdf";
   version = "0.1.0";
-  src     = ./simple.md;
+  src = ./simple.md;
 }
-

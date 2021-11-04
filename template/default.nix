@@ -1,3 +1,3 @@
-{ pkgs }: {
-  latex = import ./latex { inherit pkgs; };
+args: {
+  latex = import ./latex args;
 }
